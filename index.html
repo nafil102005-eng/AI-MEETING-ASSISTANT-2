@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Meeting Assistant</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- html2pdf for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Marked.js for markdown rendering if Gemini returns markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar: History & Settings -->
+        <aside class="sidebar">
+            <div class="brand">
+                <i class="fa-solid fa-wave-square brand-icon"></i>
+                <h2>MeetAI</h2>
+            </div>
+            
+            <button class="btn-new-meeting" id="btnNewMeeting">
+                <i class="fa-solid fa-plus"></i> New Meeting
+            </button>
+
+            <div class="history-container">
+                <h3>Meeting History</h3>
+                <ul class="history-list" id="historyList">
+                    <!-- History items will be populated here -->
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="btn-settings" id="btnSettings">
+                    <i class="fa-solid fa-gear"></i> Settings
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <h1 id="meetingTitle">New Meeting</h1>
+                <div class="header-actions">
+                    <button class="btn-export hidden" id="btnExportPdf">
+                        <i class="fa-solid fa-file-pdf"></i> Export PDF
+                    </button>
+                </div>
+            </header>
+
+            <!-- Active Meeting Area -->
+            <div class="meeting-dashboard">
+                
+                <!-- Controls -->
+                <div class="controls-panel glass-panel">
+                    <div class="mic-status" id="micStatus">
+                        Ready to record
+                    </div>
+                    <button class="btn-record" id="btnRecord">
+                        <i class="fa-solid fa-microphone"></i>
+                        <span id="recordText">Start Recording</span>
+                    </button>
+                </div>
+
+                <!-- Live Transcript Area -->
+                <div class="transcript-panel glass-panel">
+                    <h3><i class="fa-solid fa-closed-captioning"></i> Live Transcript</h3>
+                    <div class="transcript-content" id="transcriptContent">
+                        <p class="placeholder-text">Click "Start Recording" and begin speaking. Your transcript will appear here...</p>
+                    </div>
+                </div>
+
+                <!-- AI Processing Status -->
+                <div class="ai-processing hidden" id="aiProcessing">
+                    <div class="spinner"></div>
+                    <p>Gemini is analyzing your meeting...</p>
+                </div>
+
+                <!-- AI Results Area -->
+                <div class="results-container hidden" id="resultsContainer">
+                    
+                    <div class="result-card glass-panel" id="summaryCard">
+                        <h3><i class="fa-solid fa-align-left"></i> Meeting Summary</h3>
+                        <div class="result-content" id="summaryContent"></div>
+                    </div>
+
+                    <div class="result-card glass-panel" id="pointsCard">
+                        <h3><i class="fa-solid fa-list-check"></i> Key Discussion Points</h3>
+                        <div class="result-content" id="pointsContent"></div>
+                    </div>
+
+                    <div class="result-card glass-panel" id="actionsCard">
+                        <h3><i class="fa-solid fa-check-double"></i> Action Items</h3>
+                        <div class="result-content" id="actionsContent"></div>
+                    </div>
+
+                    <div class="result-card glass-panel" id="decisionsCard">
+                        <h3><i class="fa-solid fa-gavel"></i> Important Decisions</h3>
+                        <div class="result-content" id="decisionsContent"></div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay hidden" id="settingsModal">
+        <div class="modal glass-panel">
+            <div class="modal-header">
+                <h3>Settings</h3>
+                <button class="btn-close" id="btnCloseSettings"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="apiKey">Gemini API Key</label>
+                    <input type="password" id="apiKey" placeholder="Enter your Gemini API Key">
+                    <small>Your key is stored securely in your browser's local storage. Get a key from <a href="https://aistudio.google.com/" target="_blank" style="color: var(--primary);">aistudio.google.com</a></small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-save" id="btnSaveSettings">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Scripts -->
+    <script src="js/storage.js"></script>
+    <script src="js/gemini.js"></script>
+    <script src="js/recorder.js"></script>
+    <script src="js/pdf.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
